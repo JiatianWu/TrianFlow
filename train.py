@@ -1,7 +1,7 @@
 import os, sys
 import yaml
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from core.dataset import KITTI_RAW, KITTI_Prepared, NYU_Prepare, NYU_v2, KITTI_Odo
+from core.dataset import KITTI_RAW, KITTI_Prepared, NYU_Prepare, NYU_v2, KITTI_Odo, RS_Prepare, RS
 from core.networks import get_model
 from core.config import generate_loss_weights_dict
 from core.visualize import Visualizer
@@ -85,6 +85,9 @@ def train(cfg):
         elif cfg.dataset == 'nyuv2':
             nyu_raw_dataset = NYU_Prepare(cfg.raw_base_dir, cfg.nyu_test_dir)
             nyu_raw_dataset.prepare_data_mp(data_dir, stride=10)
+        elif cfg.dataset == 'realsense':
+            rs_raw_dataset = RS_Prepare(cfg.raw_base_dir)
+            rs_raw_dataset.prepare_data_mp(data_dir, stride=1)
         else:
             raise NotImplementedError
         
@@ -94,6 +97,8 @@ def train(cfg):
         dataset = KITTI_Prepared(data_dir, num_scales=cfg.num_scales, img_hw=cfg.img_hw, num_iterations=(cfg.num_iterations - cfg.iter_start) * cfg.batch_size)
     elif cfg.dataset == 'nyuv2':
         dataset = NYU_v2(data_dir, num_scales=cfg.num_scales, img_hw=cfg.img_hw, num_iterations=(cfg.num_iterations - cfg.iter_start) * cfg.batch_size)
+    elif cfg.dataset == 'realsense':
+        dataset = RS(data_dir, num_scales=cfg.num_scales, img_hw=cfg.img_hw, num_iterations=(cfg.num_iterations - cfg.iter_start) * cfg.batch_size)
     else:
         raise NotImplementedError
     
