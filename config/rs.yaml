@@ -1,8 +1,8 @@
 cfg_name: 'default'
 
 # dataset
-raw_base_dir: '/nodclouddata/jiatian/dataset/realsense'
-prepared_base_dir: '/nodclouddata/jiatian/dataset/realsense'
+raw_base_dir: '/nodclouddata/jiatian/datasets/realsense'
+prepared_base_dir: '/nodclouddata/jiatian/datasets/realsense'
 dataset: 'realsense'
 num_scales: 3
 
